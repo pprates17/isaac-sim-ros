@@ -1,0 +1,12 @@
+services:
+  ros2-dev:
+    image: ros2-jazzy:latest
+    container_name: ros2-dev
+    tty: true
+    network_mode: "host"
+    ports: 
+      - "9090:9090"
+    environment:
+      - ROS_DOMAIN_ID=0
+    volumes:
+      - $HOME/IsaacSim-ros_workspaces/jazzy_ws:/jazzy_ws  

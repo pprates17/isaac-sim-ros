@@ -1,0 +1,24 @@
+services:
+  isaac-sim:
+    image: isaac-sim:jazzy
+    container_name: isaac-sim
+    restart: unless-stopped
+    runtime: nvidia
+    tty: true
+    environment:
+      - ACCEPT_EULA=Y
+      - PRIVACY_CONSENT=Y
+      - APP_LIVESTREAM_PUBLIC_IP=${PUBLIC_IP}
+    network_mode: host
+    volumes:
+      - ~/dev/containers/isaac-sim/cache/main:/isaac-sim/.cache:rw
+      - ~/dev/containers/isaac-sim/cache/computecache:/isaac-sim/.nv/ComputeCache:rw
+      - ~/dev/containers/isaac-sim/logs:/isaac-sim/.nvidia-omniverse/logs:rw
+      - ~/dev/containers/isaac-sim/config:/isaac-sim/.nvidia-omniverse/config:rw
+      - ~/dev/containers/isaac-sim/data:/isaac-sim/.local/share/ov/data:rw
+      - ~/dev/containers/isaac-sim/pkg:/isaac-sim/.local/share/ov/pkg:rw
+      - ~/IsaacSim-ros_workspaces/build_ws:/build_ws
+      - ~/IsaacSim-ros_workspaces/jazzy_ws:/jazzy_ws
+    user: "1234:1234"
+    entrypoint: ["/entrypoint.sh"]
+    command: ["/runheadless.sh", "--/app/livestream/publicEndpointAddress=$PUBLIC_IP", "--/app/livestream/port=49100"]
