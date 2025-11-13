@@ -1,6 +1,6 @@
 services:
   isaac-sim:
-    image: isaac-sim:jazzy
+    image: isaac-pegasus:latest
     container_name: isaac-sim
     restart: unless-stopped
     runtime: nvidia
@@ -9,7 +9,10 @@ services:
       - ACCEPT_EULA=Y
       - PRIVACY_CONSENT=Y
       - APP_LIVESTREAM_PUBLIC_IP=${PUBLIC_IP}
-    network_mode: host
+    network_mode: "host" 
+    ports:
+      - "47998:47998/udp"
+      - "49100:49100/tcp"
     volumes:
       - ~/dev/containers/isaac-sim/cache/main:/isaac-sim/.cache:rw
       - ~/dev/containers/isaac-sim/cache/computecache:/isaac-sim/.nv/ComputeCache:rw
@@ -17,8 +20,12 @@ services:
       - ~/dev/containers/isaac-sim/config:/isaac-sim/.nvidia-omniverse/config:rw
       - ~/dev/containers/isaac-sim/data:/isaac-sim/.local/share/ov/data:rw
       - ~/dev/containers/isaac-sim/pkg:/isaac-sim/.local/share/ov/pkg:rw
-      - ~/IsaacSim-ros_workspaces/build_ws:/build_ws
-      - ~/IsaacSim-ros_workspaces/jazzy_ws:/jazzy_ws
+      - ~/dev/containers/isaac-sim/assets:/isaac-sim/assets:rw
+      - ~/dev/IsaacSim-ros_workspaces/build_ws:/build_ws
+      - ~/dev/IsaacSim-ros_workspaces/jazzy_ws:/jazzy_ws
+      - ~/dev/containers/isaac_ros/PegasusSimulator:/PegasusSimulator:rw
+      - ~/dev/containers/isaac_ros/PX4-Autopilot:/PX4-Autopilot:rw
     user: "1234:1234"
     entrypoint: ["/entrypoint.sh"]
-    command: ["/runheadless.sh", "--/app/livestream/publicEndpointAddress=$PUBLIC_IP", "--/app/livestream/port=49100"]
+    #command: ["/runheadless.sh", "--/app/livestream/publicEndpointAddress=$PUBLIC_IP", "--/app/livestream/port=49100"]
+    #command: [" /PegasusSimulator/examples/12_px4_matrice.py", "--/app/livestream/publicEndpointAddress=$PUBLIC_IP", "--/app/livestream/port=49100"]

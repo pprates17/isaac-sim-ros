@@ -1,0 +1,7 @@
+services:
+  px4-builder:
+    image: px4-builder
+    container_name: px4_builder
+    #volumes:
+    #  - /home/pedro-prates/omniverse/PX4-Autopilot:/PX4-Autopilot
+    tty: true
